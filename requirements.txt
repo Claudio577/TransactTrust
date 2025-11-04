@@ -1,0 +1,6 @@
+streamlit
+pandas
+numpy
+kaggle
+web3
+requests
