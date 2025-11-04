@@ -5,7 +5,7 @@ Baixa e trata o dataset do Kaggle (Brazil Coronavirus).
 import pandas as pd
 from kaggle.api.kaggle_api_extended import KaggleApi
 
-def baixar_dados_kaggle(caminho_destino="data/"):
+def baixar_dados_kaggle(caminho="brazil_covid19_sample.csv"):
     api = KaggleApi()
     api.authenticate()
     api.dataset_download_files('unanimad/corona-virus-brazil', path=caminho_destino, unzip=True)
