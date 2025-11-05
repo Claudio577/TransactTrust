@@ -16,15 +16,22 @@ df = carregar_dados()
 
 # 2. Mostra resumo
 st.subheader("Dados originais do Kaggle")
-st.dataframe(df.head())
+if not df.empty:
+    st.dataframe(df.head())
 
-# 3. Gera blockchain inicial
-st.subheader("Blockchain gerado")
-blockchain_df = criar_blockchain_inicial(df.head(10))
-st.dataframe(blockchain_df)
+    # 3. Gera blockchain inicial
+    st.subheader("Blockchain gerado")
+    # Verifica se há dados suficientes para criar o bloco inicial
+    if len(df) >= 10:
+        blockchain_df = criar_blockchain_inicial(df.head(10))
+        st.dataframe(blockchain_df)
+    else:
+        st.warning("Não há registros suficientes para gerar o primeiro bloco da blockchain.")
 
-# 4. Estatísticas básicas
-st.subheader("Resumo estatístico")
-estados = df['estado'].unique()
-st.metric("Total de estados", len(estados))
-st.metric("Total de registros", len(df))
+    # 4. Estatísticas básicas
+    st.subheader("Resumo estatístico")
+    estados = df['estado'].unique()
+    st.metric("Total de estados", len(estados))
+    st.metric("Total de registros", len(df))
+else:
+    st.error("Não foi possível carregar os dados. Verifique o 'data_pipeline.py' e a localização do arquivo CSV.")
