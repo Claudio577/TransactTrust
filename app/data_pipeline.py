@@ -1,6 +1,36 @@
-import pandas as pd
-import streamlit as st
-import os
+# NOVO: Adicionar importações para ML
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import classification_report
+import joblib # Para salvar/carregar o modelo
+
+# [Restante das suas importações: pandas, streamlit, os]
+
+# ... [função carregar_dados() permanece a mesma] ...
+
+# --- TREINAMENTO DO MODELO (NOVO) ---
+@st.cache_resource # Use cache_resource para o modelo
+def treinar_modelo_fraude(df):
+    
+    st.info("Treinando o Modelo de Regressão Logística...")
+    
+    # 1. Separar features (X) e target (y)
+    X = df.drop('Class', axis=1)
+    y = df['Class']
+    
+    # 2. Normalizar as features (crucial para Regressão Logística)
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
+    # 3. Treinar o modelo
+    # Devido ao desbalanceamento, podemos usar o parâmetro class_weight='balanced'
+    model = LogisticRegression(solver='liblinear', class_weight='balanced', random_state=42)
+    model.fit(X_scaled, y)
+    
+    st.success("Modelo de Regressão Logística treinado com sucesso!")
+    return model, scaler
+
 
 # --- CARREGAMENTO DE DADOS ---
 @st.cache_data
